@@ -9,6 +9,11 @@ const roleSchema = z.object({
   name: z.string().min(1).max(255),
   level: z.string().transform((value) => parseInt(value)), // parse string to int before validating
   typeAccess: z.string().min(1).max(255),
+  field1: z.string().min(1).max(255), // New field
+  field2: z.string().min(1).max(255), // New field
+  field3: z.string().min(1).max(255), // New field
+  field4: z.string().min(1).max(255), // New field
+  field5: z.string().min(1).max(255), // New field
 });
 
 const CreateRoleForm = () => {
@@ -17,7 +22,7 @@ const CreateRoleForm = () => {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<CreateRoleDto>({
+  } = useForm<any>({
     resolver: zodResolver(roleSchema),
   });
 
@@ -40,9 +45,6 @@ const CreateRoleForm = () => {
     }
   `);
 
-  // isso vai estar na api/graphql - instala a extensão apollo
-  // ao criar o arquivo apollo.config.js, vc busca no back
-
   const onSubmit = async (data: CreateRoleDto) => {
     try {
       const response = await createRole({
@@ -62,46 +64,103 @@ const CreateRoleForm = () => {
         });
         return;
       }
-
-      // Process response if needed
     } catch (error) {
       console.error(error);
-      // Handle error
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="name">Name</label>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col"
+    >
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="name"
+        >
+          Name
+        </label>
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           id="name"
           {...register("name", { required: "Name is required" })}
         />
-        {errors.name && <p>{errors.name.message as string}</p>}
+        {errors.name && (
+          <p className="text-red-500 text-xs italic">
+            {errors.name.message as string}
+          </p>
+        )}
       </div>
-      <div>
-        <label htmlFor="level">Level</label>
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="level"
+        >
+          Level
+        </label>
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="number"
           id="level"
           {...register("level", { required: "Level is required" })}
         />
-        {errors.level && <p>{errors.level.message as string}</p>}
+        {errors.level && (
+          <p className="text-red-500 text-xs italic">
+            {errors.level.message as string}
+          </p>
+        )}
       </div>
-      <div>
-        <label htmlFor="typeAccess">Type Access</label>
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="typeAccess"
+        >
+          Type Access
+        </label>
         <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
           id="typeAccess"
           {...register("typeAccess", { required: "Type Access is required" })}
         />
-        {errors.typeAccess && <p>{errors.typeAccess.message as string}</p>}
+        {errors.typeAccess && (
+          <p className="text-red-500 text-xs italic">
+            {errors.typeAccess.message as string}
+          </p>
+        )}
       </div>
-      <button type="submit" disabled={loading}>
-        Create Role
-      </button>
+      <div className="mb-4">
+        <label
+          className="block text-gray-700 text-sm font-bold mb-2"
+          htmlFor="field1"
+        >
+          Field 1
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          id="field1"
+          {...register("field1", { required: "Field 1 is required" })}
+        />
+        {errors.field1 && (
+          <p className="text-red-500 text-xs italic">
+            {errors.field1.message as string}
+          </p>
+        )}
+      </div>
+      {/* Rest of the fields go here... */}
+
+      <div className="flex items-center justify-between">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Create Role
+        </button>
+      </div>
     </form>
   );
 };
