@@ -1,0 +1,40 @@
+version: '3'
+services:
+  api:
+    image: node:18.12
+    container_name: api
+    restart: always
+    working_dir: /app
+    volumes:
+      - ../tulio_backend:/app
+    environment:
+      - MYSQL_HOST=mysql
+    ports:
+      - '4040:4040'
+    depends_on:
+      - mysql
+    networks:
+      - tulionet
+
+  frontend:
+    image: node:18.12
+    container_name: frontend
+    restart: always
+    working_dir: /app
+    volumes:
+      - .:/app
+    networks:
+      - tulionet
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+    networks:
+      - tulionet
+
+networks:
+  tulionet:
